@@ -49,8 +49,12 @@ public class UploadImgActivity extends AppCompatActivity {
     ImageView imageViewAvatar;
     private Uri mUri;
     private ProgressDialog mProgressDialog;
+    private String userId = "USER";
     public static final int MY_REQUEST_CODE = 100;
-    public static final String TAG = MainActivity.class.getName();
+    public static final String IMAGE_URL = "AVATAR_URL";
+
+    public static final String USER_ID = "USER_ID";
+    public static final String TAG = UploadImgActivity.class.getName();
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -87,6 +91,8 @@ public class UploadImgActivity extends AppCompatActivity {
             return insets;
         });
 
+        userId = getIntent().getStringExtra(USER_ID);
+
         //gọi hàm ánh xạ
         AnhXa();
 
@@ -106,7 +112,7 @@ public class UploadImgActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(mUri !=null){
-                    UploadImage1();
+                    UploadImage1(userId);
                 }
             }
         });
@@ -119,10 +125,9 @@ public class UploadImgActivity extends AppCompatActivity {
         imageViewAvatar = findViewById(R.id.imgAvatar);
     }
 
-    public void UploadImage1() {
+    public void UploadImage1(String userId) {
         mProgressDialog.show();
-        String username = "khoa"; // giả sử là id
-        RequestBody requestUsername = RequestBody.create(MediaType.parse("multipart/form-data"), username);
+        RequestBody requestUserId = RequestBody.create(MediaType.parse("multipart/form-data"), userId);
 
         String IMAGE_PATH = RealPathUtil.getRealPath(this, mUri);
         File file = new File(IMAGE_PATH);
@@ -130,15 +135,17 @@ public class UploadImgActivity extends AppCompatActivity {
         MultipartBody.Part partBodyAvatar = MultipartBody.Part.createFormData(Const.MY_IMAGES, file.getName(), requestFile);
 
         ServiceAPI serviceAPI = ServiceAPI.serviceApi;
-        serviceAPI.upload(requestUsername, partBodyAvatar).enqueue(new Callback<List<ImageUpload>>() {
+        serviceAPI.upload(requestUserId, partBodyAvatar).enqueue(new Callback<List<ImageUpload>>() {
             @Override
             public void onResponse(Call<List<ImageUpload>> call, Response<List<ImageUpload>> response) {
                 mProgressDialog.dismiss();
-                List<ImageUpload> imageUpload = response.body();
-                if (imageUpload != null && imageUpload.size() > 0) {
-
-                    // Gọi API getUserInfo ở đây sau khi có ảnh
-                    getUserInfo(username, "5");
+                ImageUpload imageUpload = response.body().get(0);
+                if (imageUpload != null) {
+                    String avatar = imageUpload.getAvatar();
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(IMAGE_URL, avatar);
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
                 } else {
                     Toast.makeText(UploadImgActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
                 }
@@ -153,30 +160,6 @@ public class UploadImgActivity extends AppCompatActivity {
         });
     }
 
-    private void getUserInfo(String id, String imagePath) {
-        ServiceAPI serviceAPI = ServiceAPI.serviceApi;
-
-        serviceAPI.getUserInfo(id, imagePath).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    User user = response.body();
-
-                    // Chuyển sang ProfileActivity
-                    Intent intent = new Intent(UploadImgActivity.this, ProfileActivity.class);
-                    intent.putExtra("user",(Serializable) user);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(UploadImgActivity.this, "Không lấy được thông tin user", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(UploadImgActivity.this, "Lỗi lấy user: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 
 
