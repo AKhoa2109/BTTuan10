@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".UploadImgActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/holo_red_light"
+        app:navigationIcon="@drawable/back"
+        app:title="Back"
+        app:titleTextColor="@android:color/white">
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/imgAvatar"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
+    <Button
+        android:id="@+id/chooseButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CHOOSE IMAGES"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="32dp"
+        android:padding="12dp" />
+
+    <!-- Upload Button -->
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UPLOAD IMAGES"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="32dp"
+        android:padding="12dp" />
+
+</LinearLayout>
