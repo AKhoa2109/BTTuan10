@@ -97,7 +97,7 @@ public class ControlActivity extends AppCompatActivity {
                     if (this.flaglamp1 != 1) return;
                     {
                         this.flaglamp1 = 0;
-                        this.btnTb1.setBackgroundResource(R.drawable.btnnotConnection);
+                        this.btnTb1.setBackgroundResource(R.drawable.btnnotconnection);
                         btSocket.getOutputStream().write("A".toString().getBytes());
                         txt1.setText("Thiết bị số 1 đang tắt");
                         return;
@@ -131,7 +131,7 @@ public class ControlActivity extends AppCompatActivity {
                     if (this.flaglamp2 != 1) return;
                     {
                         this.flaglamp2 = 0;
-                        this.btnTb2.setBackgroundResource(R.drawable.btnnotConnection);
+                        this.btnTb2.setBackgroundResource(R.drawable.btnnotconnection);
                         btSocket.getOutputStream().write("6".toString().getBytes());
                         txt1.setText("Thiết bị số 2 đang tắt");
                         return;

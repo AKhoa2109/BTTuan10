@@ -70,7 +70,7 @@
         android:layout_width="98dp"
         android:layout_height="98dp"
         android:layout_marginTop="328dp"
-        android:background="@drawable/btnnotConnection"
+        android:background="@drawable/btnnotconnection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
